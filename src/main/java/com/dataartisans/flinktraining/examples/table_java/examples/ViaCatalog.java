@@ -16,7 +16,7 @@
 
 package com.dataartisans.flinktraining.examples.table_java.examples;
 
-import com.dataartisans.flinktraining.examples.table_java.catalog.TaxiDataCatalog;
+import com.dataartisans.flinktraining.examples.table_java.descriptors.TaxiData;
 import com.dataartisans.flinktraining.exercises.datastream_java.utils.GeoUtils;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.TimeCharacteristic;
@@ -27,7 +27,7 @@ import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.types.Row;
 
 /**
- * Demonstrates the use of {@link TaxiDataCatalog} to easily register the taxi data
+ * Demonstrates the use of {@link TaxiData} catalog descriptor to easily register the taxi data
  * as tables under the "nyc" schema, e.g. {@code nyc.TaxiRides} and {@code nyc.TaxiFares}.
  */
 public class ViaCatalog {
@@ -48,7 +48,12 @@ public class ViaCatalog {
 		StreamTableEnvironment tEnv = TableEnvironment.getTableEnvironment(env);
 
 		// register the taxi data tables under the "nyc" schema
-		tEnv.registerExternalCatalog("nyc", new TaxiDataCatalog(ridesFile, faresFile, maxEventDelay, servingSpeedFactor));
+		tEnv.connect(new TaxiData()
+				.ridesFile(ridesFile)
+				.faresFile(faresFile)
+				.maxEventDelaySecs(maxEventDelay)
+				.servingSpeedFactor(servingSpeedFactor))
+				.registerExternalCatalog("nyc");
 
 		// register user-defined functions (see FLINK-10696)
 		tEnv.registerFunction("isInNYC", new GeoUtils.IsInNYC());

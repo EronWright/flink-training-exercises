@@ -19,16 +19,18 @@ package com.dataartisans.flinktraining.examples.table_java.descriptors;
 import org.apache.flink.table.descriptors.DescriptorProperties;
 import org.apache.flink.table.descriptors.ExternalCatalogDescriptor;
 import org.apache.flink.util.Preconditions;
+import com.dataartisans.flinktraining.examples.table_java.catalog.TaxiDataCatalog;
 
 import java.util.Map;
 
 import static com.dataartisans.flinktraining.examples.table_java.descriptors.TaxiDataValidator.CATALOG_FARES_FILE;
 import static com.dataartisans.flinktraining.examples.table_java.descriptors.TaxiDataValidator.CATALOG_MAX_EVENT_DELAY_SECS;
 import static com.dataartisans.flinktraining.examples.table_java.descriptors.TaxiDataValidator.CATALOG_RIDES_FILE;
+import static com.dataartisans.flinktraining.examples.table_java.descriptors.TaxiDataValidator.CATALOG_SERVING_SPEED_FACTOR;
 import static com.dataartisans.flinktraining.examples.table_java.descriptors.TaxiDataValidator.CATALOG_TYPE_VALUE_TAXI_DATA;
 
 /**
- * A descriptor for the catalog of taxi data as provided by the New York City Taxi & Limousine Commission.
+ * A descriptor for the catalog of taxi data ({@link TaxiDataCatalog}) as provided by the New York City Taxi & Limousine Commission.
  */
 public class TaxiData extends ExternalCatalogDescriptor {
 	public TaxiData() {
@@ -73,7 +75,7 @@ public class TaxiData extends ExternalCatalogDescriptor {
 			properties.putInt(CATALOG_MAX_EVENT_DELAY_SECS, this.maxEventDelaySecs);
 		}
 		if (this.servingSpeedFactor != null) {
-			properties.putInt(CATALOG_MAX_EVENT_DELAY_SECS, this.servingSpeedFactor);
+			properties.putInt(CATALOG_SERVING_SPEED_FACTOR, this.servingSpeedFactor);
 		}
 		return properties.asMap();
 	}
