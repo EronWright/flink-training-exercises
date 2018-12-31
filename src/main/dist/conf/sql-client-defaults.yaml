@@ -1,0 +1,52 @@
+################################################################################
+#  Copyright 2018 data Artisans GmbH
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+################################################################################
+
+# SQL Client environment file for flink-training-exercises.
+
+# Register the taxi-data catalog
+catalogs:
+  - name: nyc
+    type: taxi-data
+    rides-file: /Users/david/stuff/flink-training/trainingData/nycTaxiRides.gz
+    fares-file: /Users/david/stuff/flink-training/trainingData/nycTaxiFares.gz
+
+# Register the geo functions
+functions:
+  - name: isInNYC
+    from: class
+    class: com.dataartisans.flinktraining.exercises.datastream_java.utils.GeoUtils$IsInNYC
+  - name: toCellId
+    from: class
+    class: com.dataartisans.flinktraining.exercises.datastream_java.utils.GeoUtils$ToCellId
+  - name: toCoords
+    from: class
+    class: com.dataartisans.flinktraining.exercises.datastream_java.utils.GeoUtils$ToCoords
+
+# Register predefined views
+tables:
+  - name: TaxiFaresInNYC
+    type: view
+    query: >
+      SELECT f.rideId, f.driverId, f.totalFare
+      FROM nyc.TaxiRides r INNER JOIN nyc.TaxiFares f ON r.rideId = f.rideId
+      WHERE isInNYC(r.startLon, r.startLat) AND isInNYC(r.endLon, r.endLat)
+
+# Execution properties allow for changing the behavior of a table program.
+
+execution:
+  type: streaming                   # required: execution mode either 'batch' or 'streaming'
+  result-mode: table                # required: either 'table' or 'changelog'
+  time-characteristic: event-time   # optional: 'processing-time' or 'event-time' (default)

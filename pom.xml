@@ -51,7 +51,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<slf4j.version>1.7.19</slf4j.version>
-		<flink.version>1.7.1</flink.version>
+		<flink.version>1.8-SNAPSHOT</flink.version>
 		<scala.binary.version>2.11</scala.binary.version>
 		<junit.version>4.12</junit.version>
 	</properties>
@@ -559,6 +559,24 @@
 							</transformers>
 						    -->
 							<createDependencyReducedPom>false</createDependencyReducedPom>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>dist</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assemblies/dist.xml</descriptor>
+							</descriptors>
 						</configuration>
 					</execution>
 				</executions>
