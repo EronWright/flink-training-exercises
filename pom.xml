@@ -54,6 +54,8 @@
 		<flink.version>1.7.2</flink.version>
 		<scala.binary.version>2.11</scala.binary.version>
 		<junit.version>4.12</junit.version>
+
+		<pravega.version>0.5.0-139.8ffee60-SNAPSHOT</pravega.version>
 	</properties>
 
 	<distributionManagement>
@@ -68,6 +70,12 @@
 	</distributionManagement>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>io.pravega</groupId>
+			<artifactId>pravega-connectors-flink_2.11</artifactId>
+			<version>${pravega.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.flink</groupId>
